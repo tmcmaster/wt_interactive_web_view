@@ -1,0 +1,26 @@
+name: wt_interactive_web_view
+description: "A new Flutter package project."
+version: 0.0.1
+homepage:
+publish_to: 'none'
+
+environment:
+  sdk: '>=3.3.4 <4.0.0'
+  flutter: ">=1.17.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_inappwebview: ^6.0.0
+  js: ^0.6.7
+  logger: ^2.4.0
+  webview_flutter: ^4.8.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+
+flutter:
+  assets:
+    - assets/interactive_web_view.js
