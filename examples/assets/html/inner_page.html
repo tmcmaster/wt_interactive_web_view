@@ -7,13 +7,18 @@
             flex-direction: column;
             gap: 16px;
         }
+        main {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
         h3 {
             margin: 0;
             text-align: center;
         }
         fieldset {
           display: flex;
-          flex-direction: row;
+          flex-direction: column;
           justify-content: center;
           align-items: center;
           gap: 8px;
@@ -36,9 +41,7 @@
                 console.log('IFRAME: received a rotation event: ', event);
                 const currentValue = slider.value;
                 const newValue = event.data.rotation;
-                if (newValue !== currentValue) {
-                    slider.value = event.data.rotation;
-                }
+                slider.value = event.data.rotation;
             });
 
             slider.addEventListener('value-changed', (e) => {
@@ -60,6 +63,10 @@
     <fieldset id="interop">
         <legend>Interact with Flutter</legend>
         <integer-slider id="my-slider" min="-50" max="50" step="5" value="30"></integer-slider>
+        <nav>
+            <button id="left">Left</button>
+            <button id="right">Right</button>
+        </nav>
     </fieldset>
 </main>
 

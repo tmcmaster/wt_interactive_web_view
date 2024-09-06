@@ -1,7 +1,7 @@
 name: wt_interactive_web_view
 description: "A new Flutter package project."
 version: 0.0.1
-homepage:
+homepage: https://github.com/tmcmaster/wt_interactive_web_view
 publish_to: 'none'
 
 environment:
