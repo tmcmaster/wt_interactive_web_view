@@ -1,111 +1,113 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>in_app_web_view</title>
+    <title>in_app_web_view</title>
 
-  <base href="$FLUTTER_BASE_HREF">
+    <base href="$FLUTTER_BASE_HREF">
 
-  <meta charset="UTF-8">
-  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <meta name="description" content="A new Flutter project.">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="in_app_web_view">
-  <meta name="mobile-web-app-capable" content="yes">
+    <meta charset="UTF-8">
+    <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+    <meta name="description" content="A new Flutter project.">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="in_app_web_view">
+    <meta name="mobile-web-app-capable" content="yes">
 
-  <link rel="apple-touch-icon" href="icons/Icon-192.png">
-  <link rel="icon" type="image/png" href="icons/favicon.png"/>
-  <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icons/Icon-192.png">
+    <link rel="icon" type="image/png" href="icons/favicon.png"/>
+    <link rel="manifest" href="manifest.json">
 
-  <script type="application/javascript" src="/assets/packages/flutter_inappwebview_web/assets/web/web_support.js" defer></script>
+    <script type="module">
+        import '/assets/js/integer_slider.js';
 
-  <script>
-    // The value below is injected by flutter build, do not touch.
-    const serviceWorkerVersion = null;
-  </script>
+        import { flutterInit } from '/assets/packages/wt_interactive_web_view/assets/interactive_web_view.js';
 
-  <!-- This script adds the flutter initialization JS code -->
-  <script src="flutter.js" defer></script>
+        {{flutter_js}}
+        {{flutter_build_config}}
 
-  <script type="module">
-    import '/assets/js/integer_slider.js';
-    import { flutterInit } from '/assets/packages/wt_interactive_web_view/assets/interactive_web_view.js';
-
-    flutterInit({ eventBus: true }).then((eventBus) => {
-        const slider = document.getElementById('my-slider');
-        slider.addEventListener('value-changed', (e) => {
-            console.log('Outer HTML: Slider value changed:', e.detail);
-            const rotation = e.detail.value;
-            eventBus.publishEvent({
-                source: 'html',
-                type: 'rotation',
-                data: {
-                    rotation: rotation
-                }
+        flutterInit({
+          eventBus: true,
+          serviceWorkerVersion: {{flutter_service_worker_version}}
+        }).then((eventBus) => {
+            console.log('INIT: Ready for custom initialisation');
+            eventBus.addEventListener('rotation', (event) => {
+              console.log('html.rotateFlutter: ', event);
+              const rotation = event.data.rotation;
+              const slider = document.getElementById('my-slider');
+              slider.value = rotation;
             });
-            document.getElementById('flutter_target').style.transform = `rotate(${rotation}deg) scale(0.80)`;
-        });
-
-        eventBus.addEventListener('rotation', (event) => {
-            console.log('html.rotateFlutter: ', event);
-            const rotation = event.data.rotation;
             const slider = document.getElementById('my-slider');
-            slider.value = rotation;
+            if (slider) {
+              console.log('INIT: listening to slider');
+              slider.addEventListener('value-changed', (e) => {
+                  console.log('Outer HTML: Slider value changed:', e.detail);
+                  const rotation = e.detail.value;
+                  eventBus.publishEvent({
+                      source: 'html',
+                      type: 'rotation',
+                      data: {
+                          rotation: rotation
+                      }
+                  });
+                  document.getElementById('flutter_target').style.transform = `rotate(${rotation}deg) scale(0.80)`;
+              });
+            } else {
+              console.warn('INIT: Could not find the slider');
+            }
         });
-    });
-  </script>
+    </script>
 
-  <style>
-    #flutter_target {
-        transform: rotate(20deg) scale(0.80);
-        width: 400px;
-        height: 600px;
-        border-radius: 34px;
-        overflow: hidden;
-        border:solid #ccc 1px
-    }
+    <style>
+        #flutter_target {
+            transform: rotate(20deg) scale(0.80);
+            width: 400px;
+            height: 600px;
+            border-radius: 34px;
+            overflow: hidden;
+            border:solid #ccc 1px
+        }
 
-    body {
-        margin: 0;
-        padding: 16px;
-        display: flex;
-        justify-content: center;
-        gap: 8px;
-    }
+        body {
+            margin: 0;
+            padding: 16px;
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+        }
 
-    main {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 16px;
-        border: solid #ccc 1px;
-        box-sizing: border-box;
-        padding: 20px;
-        width: 800px;
-    }
+        main {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            border: solid #ccc 1px;
+            box-sizing: border-box;
+            padding: 20px;
+            width: 800px;
+        }
 
-    h3 {
-        margin: 0;
-        text-align: center;
-    }
-    fieldset {
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        gap: 8px;
-    }
-  </style>
+        h3 {
+            margin: 0;
+            text-align: center;
+        }
+        fieldset {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            gap: 8px;
+        }
+    </style>
 </head>
 <body>
 <main>
-  <h3>Top Level HTML Page</h3>
-  <i>This the is the HTML page that the Flutter app is running within.</i>
-  <fieldset id="interop">
-    <legend>Interact with Flutter</legend>
-    <integer-slider id="my-slider" min="-50" max="50" step="5" value="30"></integer-slider>
-  </fieldset>
-  <div id="flutter_target"></div>
+    <h3>Top Level HTML Page</h3>
+    <i>This the is the HTML page that the Flutter app is running within.</i>
+    <fieldset id="interop">
+        <legend>Interact with Flutter</legend>
+        <integer-slider id="my-slider" min="-50" max="50" step="5" value="30"></integer-slider>
+    </fieldset>
+    <div id="flutter_target"></div>
 </main>
 </body>
 </html>

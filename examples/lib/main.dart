@@ -68,6 +68,7 @@ class _CounterAppState extends State<CounterApp> {
   Widget build(BuildContext context) {
     log.d('CounterApp.build : building material app');
     return Scaffold(
+      appBar: AppBar(title: const Text('Flutter App'),),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(

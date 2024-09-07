@@ -1,3 +1,12 @@
+import '/assets/packages/flutter_inappwebview_web/assets/web/web_support.js';
+
+class EventBusEvent {
+    constructor(type, data) {
+        this.type = type;
+        this.data = data;
+    }
+}
+
 class HtmlEventBus {
     constructor(config = {}) {
         this.cfg = {
@@ -112,15 +121,6 @@ class HtmlEventBus {
     }
 }
 
-let htmlEventBus = null;
-function useHtmlEventBus() {
-    if (!htmlEventBus) {
-        htmlEventBus = new HtmlEventBus();
-    }
-    return htmlEventBus;
-}
-
-
 class IframeEventBus {
   constructor() {
     console.log('IframeEventBus: constructor');
@@ -159,46 +159,56 @@ class IframeEventBus {
   }
 }
 
-let iframeEventBus = null;
-function useIframeEventBus() {
-    if (!iframeEventBus) {
-        iframeEventBus = new IframeEventBus();
-    }
-    return iframeEventBus;
-}
-
-
 function flutterInit(config = {}) {
     const cfg = {
         iframeId: 'wt_interactive_web_view',
         flutterId: 'flutter_target',
         initFunction: '_EventBusState',
+        serviceWorkerVersion: null,
         eventBus: false,
         ...config
     };
 
     return new Promise((accept,reject) => {
         window.addEventListener('load', function() {
-            const { iframeId, flutterId, eventBus } = cfg;
-
-            const htmlEventBus = new HtmlEventBus(cfg);
-
+            console.log('INIT: Window has loaded');
+            const { iframeId, flutterId, eventBus, serviceWorkerVersion } = cfg;
             _flutter.loader.loadEntrypoint({
                 serviceWorker: {
                     serviceWorkerVersion: serviceWorkerVersion,
                 },
                 onEntrypointLoaded: function(engineInitializer) {
+                    console.log('INIT: Entrypoint has loaded');
                     engineInitializer.initializeEngine({
                         hostElement: document.querySelector(`#${flutterId}`),
-                    }).then(function(appRunner) {
-                        appRunner.runApp();
+                    }).then(async function(appRunner) {
+                        console.log('INIT: AppRunner has loaded');
+                        await appRunner.runApp();
+                        console.log('INIT: App has loaded');
+                        const htmlEventBus = new HtmlEventBus(cfg);
+                        console.log('INIT: HtmlEventBus has loaded');
+                        accept(eventBus ? htmlEventBus : null);
                     });
                 }
             });
-
-            accept(eventBus ? htmlEventBus : null);
         });
     });
+}
+
+let htmlEventBus = null;
+function useHtmlEventBus() {
+    if (!htmlEventBus) {
+        htmlEventBus = new HtmlEventBus();
+    }
+    return htmlEventBus;
+}
+
+let iframeEventBus = null;
+function useIframeEventBus() {
+    if (!iframeEventBus) {
+        iframeEventBus = new IframeEventBus();
+    }
+    return iframeEventBus;
 }
 
 export { flutterInit, useIframeEventBus, useHtmlEventBus };

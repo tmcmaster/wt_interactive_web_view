@@ -77,4 +77,8 @@ class EventBusFlutter {
       listener(eventString);
     }
   }
+
+  void publishEvent(Map<String, dynamic> event) {
+    emitFromFlutter(event);
+  }
 }

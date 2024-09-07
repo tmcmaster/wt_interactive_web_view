@@ -23,4 +23,4 @@ dev_dependencies:
 
 flutter:
   assets:
-    - assets/interactive_web_view.js
+    - assets/
