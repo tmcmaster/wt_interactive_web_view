@@ -145,12 +145,13 @@ class IframeEventBus {
   receiveEvent(event) {
     console.log('IframeEventBus.receiveEvent: ', event.data);
     const eventType = event.data.type;
-    const listenerList = this.events[eventType];
-    if (listenerList) {
-        listenerList.forEach((listener) => {
-            listener(event.data);
-        });
-    }
+    const listenerList = [
+        ...(this.events[eventType] ?? []),
+        ...(this.events['*'] ?? []),
+    ];
+    listenerList.forEach((listener) => {
+        listener(event.data);
+    });
   }
 
   publishEvent(event) {
@@ -159,6 +160,7 @@ class IframeEventBus {
   }
 }
 
+// noinspection JSUnusedGlobalSymbols
 function flutterInit(config = {}) {
     const cfg = {
         iframeId: 'wt_interactive_web_view',

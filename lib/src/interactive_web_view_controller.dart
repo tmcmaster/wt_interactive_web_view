@@ -1,8 +1,8 @@
-import 'package:wt_interactive_web_view/src/interactive_web_view_event_bus.dart';
-import 'package:wt_interactive_web_view/src/utils/log.dart';
+import 'package:wt_interactive_web_view/interactive_web_view.dart';
+import 'package:wt_logging/wt_logging.dart';
 
 class InteractiveWebViewController {
-  static final log = Log.d();
+  static final log = logger(InteractiveWebViewController, level: Level.debug);
 
   final String name;
   late EventBusFlutter eventBus;
@@ -16,7 +16,7 @@ class InteractiveWebViewController {
     eventBus.addEventBusListener(receiveEvent);
   }
 
-  void sendEvent(Map<String, dynamic> event) {
+  void sendEvent(GenericEvent event) {
     log.d('InteractiveWebViewController : sendEvent : $event');
     eventBus.emitFromFlutter(event);
   }

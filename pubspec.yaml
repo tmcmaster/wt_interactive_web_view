@@ -11,15 +11,27 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  freezed_annotation: ^2.4.4
+  json_annotation: ^4.9.0
   flutter_inappwebview: ^6.0.0
   js: ^0.6.7
   logger: ^2.4.0
   webview_flutter: ^4.8.0
+  wt_logging:
+    git:
+      url: https://github.com/tmcmaster/wt_logging.git
+  wt_models:
+    git:
+      url: https://github.com/tmcmaster/wt_models.git
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^3.0.0
+  build_runner: ^2.4.12
+  freezed: ^2.5.7
+  json_serializable: ^6.8.0
+  mockito: ^5.4.4
 
 flutter:
   assets:

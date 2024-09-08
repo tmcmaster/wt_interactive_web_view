@@ -1,8 +1,10 @@
 import 'dart:convert';
 
+import 'package:wt_interactive_web_view/src/model/generic_event.dart';
 import 'package:wt_interactive_web_view/src/utils/log.dart';
 import 'package:js/js.dart' as js;
 import 'package:js/js_util.dart' as js_util;
+
 
 class EventBusFlutter {
   static final log = Log.d();
@@ -53,7 +55,7 @@ class EventBusFlutter {
     eventBusListeners.add(listener);
   }
 
-  void removeEventBusListener(void Function(String event) listener) {
+  void removeEventBusListener(void Function(Map<String, dynamic> event) listener) {
     log.d('EventBusFlutter: Flutter removing listening from the Event Bus');
     eventBusListeners.remove(listener);
   }
@@ -70,15 +72,15 @@ class EventBusFlutter {
     }
   }
 
-  void emitFromFlutter(Map<String, dynamic> event) {
+  void emitFromFlutter(GenericEvent event) {
     log.d('EventBusFlutter: Emitting event from Flutter: $event');
     for (var listener in flutterListeners) {
-      final eventString = jsonEncode(event);
+      final eventString = GenericEvent.convert.from.model.to.jsonMapString(event);
       listener(eventString);
     }
   }
 
-  void publishEvent(Map<String, dynamic> event) {
+  void publishEvent(GenericEvent event) {
     emitFromFlutter(event);
   }
 }

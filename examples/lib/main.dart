@@ -7,16 +7,15 @@ import 'package:wt_interactive_web_view/interactive_web_view.dart';
 void main() async {
   debugPrint('MAIN Building');
   runApp(MaterialApp(
-      title: 'Testing InAppWebView',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueGrey),
-        useMaterial3: true,
-      ),
-      debugShowCheckedModeBanner: false,
-      home: const CounterApp(),
+    title: 'Testing InAppWebView',
+    theme: ThemeData(
+      colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueGrey),
+      useMaterial3: true,
+    ),
+    debugShowCheckedModeBanner: false,
+    home: const CounterApp(),
   ));
 }
-
 
 class CounterApp extends StatefulWidget {
   const CounterApp({
@@ -68,7 +67,9 @@ class _CounterAppState extends State<CounterApp> {
   Widget build(BuildContext context) {
     log.d('CounterApp.build : building material app');
     return Scaffold(
-      appBar: AppBar(title: const Text('Flutter App'),),
+      appBar: AppBar(
+        title: const Text('Flutter App'),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -140,12 +141,10 @@ class _CounterAppState extends State<CounterApp> {
     );
   }
 
-  Map<String, dynamic> _rotationEvent(int degrees) {
-    return {
-      'type': 'rotation',
-      'data': {'rotation': degrees},
-    };
+  GenericEvent _rotationEvent(int degrees) {
+    return GenericEvent(
+      type: 'rotation',
+      data: {'rotation': degrees},
+    );
   }
 }
-
-
