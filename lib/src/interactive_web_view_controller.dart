@@ -6,7 +6,7 @@ class InteractiveWebViewController {
 
   final String name;
   late EventBusFlutter eventBus;
-  final void Function(Map<String, dynamic>)? onEvent;
+  final void Function(GenericEvent)? onEvent;
 
   InteractiveWebViewController({
     required this.name,
@@ -23,7 +23,7 @@ class InteractiveWebViewController {
 
   void receiveEvent(event) {
     log.d('InteractiveWebViewController : receiveEvent : $event');
-    onEvent?.call(event);
+    onEvent?.call(GenericEvent.fromJson(event));
   }
 
   dispose() {

@@ -63,7 +63,6 @@ class EventBusFlutter {
   @js.JSExport()
   void emitToFlutter(String eventString) {
     final event = jsonDecode(eventString);
-
     if (event['source'] != 'flutter') {
       log.d('EventBusFlutter: Emitting event to Flutter: $eventString');
       for (var listener in eventBusListeners) {

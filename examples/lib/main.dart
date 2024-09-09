@@ -46,9 +46,9 @@ class _CounterAppState extends State<CounterApp> {
     super.initState();
   }
 
-  void onEvent(Map<String, dynamic> event) {
+  void onEvent(GenericEvent event) {
     log.d('CounterApp.onEvent : $event');
-    final newValue = event['data']['rotation'];
+    final newValue = event.data['rotation'];
     if (newValue != null && newValue != _counter) {
       setState(() {
         _counter = newValue;
