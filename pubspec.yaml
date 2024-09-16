@@ -19,10 +19,10 @@ dependencies:
   webview_flutter: ^4.8.0
   wt_logging:
     git:
-      url: https://github.com/tmcmaster/wt_logging.git
+      url: git@github.com:tmcmaster/wt_logging.git
   wt_models:
     git:
-      url: https://github.com/tmcmaster/wt_models.git
+      url: git@github.com:tmcmaster/wt_models.git
 
 dev_dependencies:
   flutter_test:
